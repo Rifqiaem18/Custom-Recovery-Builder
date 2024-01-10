@@ -6,7 +6,7 @@ on:
       MANIFEST_SOURCE:
         description: 'Manifest Source'
         required: true
-        default: 'https://github.com/PitchBlackTWRP/manifest_pb.git'
+        default: 'https://github.com/PitchBlackRecoveryProject/manifest_pb.git'
         type: choice
         options:
         - https://github.com/PitchBlackTWRP/manifest_pb.git
@@ -14,7 +14,7 @@ on:
       MANIFEST_BRANCH:
         description: 'Manifest Branch'
         required: true
-        default: 'twrp-8.1'
+        default: 'android-8.1'
         type: choice
         options:
         - twrp-8.1
