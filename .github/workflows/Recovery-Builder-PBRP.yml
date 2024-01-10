@@ -7,10 +7,6 @@ on:
         description: 'Manifest Source'
         required: true
         default: 'https://github.com/PitchBlackRecoveryProject/manifest_pb.git'
-        type: choice
-        options:
-        - https://github.com/PitchBlackTWRP/manifest_pb.git
-        - https://github.com/PitchBlackRecoveryProject/manifest_pb.git
       MANIFEST_BRANCH:
         description: 'Manifest Branch'
         required: true
