@@ -61,7 +61,7 @@ jobs:
     steps:
     - name: Check Out
       uses: actions/checkout@v3
-      
+
     - name: Display Inputs
       run: |
         echo "Displaying variables/inputs."
@@ -133,6 +133,12 @@ jobs:
         cd ${{ github.event.inputs.DEVICE_PATH }}
         echo "COMMIT_ID=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
+    - name: Custom
+      run: |
+        cd android-recovery
+        ${{ github.event.inputs.Custom_1 }}
+        ${{ github.event.inputs.Custom_2 }}
+
     - name: Check Build Makefile
       run: |
         cd android-recovery
@@ -159,11 +165,11 @@ jobs:
         export ALLOW_MISSING_DEPENDENCIES=true
         lunch ${{ env.DEVICE_MAKEFILE }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
         echo "Done building your ${{ github.event.inputs.BUILD_TARGET }}.img"
-      
+
     - name: Set Build Date # Output will be use in Release
       run: |
         echo "BUILD_DATE=$(date +%Y%m%d)" >> $GITHUB_ENV
-      
+
     - name: Upload to Release (boot and becovery)
       if: github.event.inputs.BUILD_TARGET == 'boot' || github.event.inputs.BUILD_TARGET == 'recovery'
       uses: softprops/action-gh-release@v1
