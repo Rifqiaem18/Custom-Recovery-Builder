@@ -146,11 +146,11 @@ jobs:
     - name: Building Image
       run: |
         cd android-recovery
-        ${{ github.event.inputs.Custom_1 }}
-        ${{ github.event.inputs.Custom_2 }}
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         lunch ${{ env.DEVICE_MAKEFILE }}-eng
+        ${{ github.event.inputs.Custom_1 }}
+        ${{ github.event.inputs.Custom_2 }}
         mka recoveryimage
 
     - name: Set Build Date # Output will be use in Release
