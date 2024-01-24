@@ -124,12 +124,6 @@ jobs:
         cd ${{ github.event.inputs.DEVICE_PATH }}
         echo "COMMIT_ID=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-    - name: Custom
-      run: |
-        cd android-recovery
-        ${{ github.event.inputs.Custom_1 }}
-        ${{ github.event.inputs.Custom_2 }}
-
     - name: Check Build Makefile
       run: |
         cd android-recovery
@@ -152,9 +146,12 @@ jobs:
     - name: Building Image
       run: |
         cd android-recovery
+        ${{ github.event.inputs.Custom_1 }}
+        ${{ github.event.inputs.Custom_2 }}
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
-        lunch ${{ env.DEVICE_MAKEFILE }}-eng && mka pbrp
+        lunch ${{ env.DEVICE_MAKEFILE }}-eng
+        mka recoveryimage
 
     - name: Set Build Date # Output will be use in Release
       run: |
