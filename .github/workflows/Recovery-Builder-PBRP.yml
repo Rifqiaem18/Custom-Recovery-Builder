@@ -110,7 +110,7 @@ jobs:
         cd android-recovery
         git config --global user.name "Rifqiaem18"
         git config --global user.email "rifqi.aem@gmail.com"
-        repo init --depth=1 -u ${{ github.event.inputs.MANIFEST_URL }} -b ${{ github.event.inputs.MANIFEST_BRANCH }}
+        repo init -u ${{ github.event.inputs.MANIFEST_URL }} -b ${{ github.event.inputs.MANIFEST_BRANCH }}
 
     - name: Repo Sync
       run: |
@@ -143,14 +143,19 @@ jobs:
         cd /usr/bin
         sudo ln -sf python2 python
 
+    - name: Custom
+      run: |
+        cd android-recovery
+        ${{ github.event.inputs.Custom_1 }}
+        ${{ github.event.inputs.Custom_2 }}
+      continue-on-error: true
+
     - name: Building Image
       run: |
         cd android-recovery
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         lunch ${{ env.DEVICE_MAKEFILE }}-eng
-        ${{ github.event.inputs.Custom_1 }}
-        ${{ github.event.inputs.Custom_2 }}
         mka recoveryimage
 
     - name: Set Build Date # Output will be use in Release
