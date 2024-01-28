@@ -14,7 +14,7 @@ on:
       DEVICE_TREE:
         description: 'Device Tree'
         required: true
-        default: 'https://github.com/Rifqiaem18/ASUS_X00HD_4.git'
+        default: 'https://github.com/Rifqiaem18/X00HD.git'
       DEVICE_TREE_BRANCH:
         description: 'Device Tree Branch'
         required: true
@@ -22,11 +22,11 @@ on:
       DEVICE_PATH:
         description: 'Device Path'
         required: true
-        default: 'device/asus/ASUS_X00HD_4'
+        default: 'device/asus/X00HD'
       DEVICE_NAME:
         description: 'Device Codename'
         required: true
-        default: 'ASUS_X00HD_4'
+        default: 'X00HD'
       BUILD_TARGET:
         description: 'Specify your Build Target'
         required: true
@@ -118,7 +118,7 @@ jobs:
         cd android-recovery
         git config --global user.name "Rifqiaem18"
         git config --global user.email "rifqi.aem@gmail.com"
-        repo init --depth=1 -u ${{ github.event.inputs.MANIFEST_URL }} -b ${{ github.event.inputs.MANIFEST_BRANCH }}
+        repo init -u ${{ github.event.inputs.MANIFEST_URL }} -b ${{ github.event.inputs.MANIFEST_BRANCH }}
         sed -i '/<remove-project name="platform\/external\/gflags"  \/>/d' .repo/manifests/remove-minimal.xml
         
     - name: Repo Sync
@@ -144,8 +144,8 @@ jobs:
         cd android-recovery
         if [ -f ${{ github.event.inputs.DEVICE_PATH }}/twrp_${{ github.event.inputs.DEVICE_NAME}}.mk ]; then
             echo "DEVICE_MAKEFILE=twrp_${{ github.event.inputs.DEVICE_NAME }}" >> $GITHUB_ENV
-        elif [ -f ${{ github.event.inputs.DEVICE_PATH }}/omni_${{ github.event.inputs.DEVICE_NAME}}.mk ]; then
-            echo "DEVICE_MAKEFILE=omni_${{ github.event.inputs.DEVICE_NAME }}" >> $GITHUB_ENV
+        elif [ -f ${{ github.event.inputs.DEVICE_PATH }}/full_${{ github.event.inputs.DEVICE_NAME}}.mk ]; then
+            echo "DEVICE_MAKEFILE=full_${{ github.event.inputs.DEVICE_NAME }}" >> $GITHUB_ENV
         else
             echo "No recovery makefile file found!"
         fi
