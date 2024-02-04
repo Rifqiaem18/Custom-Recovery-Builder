@@ -138,6 +138,7 @@ jobs:
         cd android-recovery
         ${{ github.event.inputs.Custom_1 }}
         ${{ github.event.inputs.Custom_2 }}
+      continue-on-error: true
 
     - name: Check Build Makefile
       run: |
