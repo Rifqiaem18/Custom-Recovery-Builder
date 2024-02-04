@@ -124,7 +124,6 @@ jobs:
     - name: Repo Sync
       run: |
         cd android-recovery
-        git clone https://github.com/Rifqiaem18/etc.git -b roomservice .repo/local_manifest
         repo sync -j$(nproc --all) --force-sync
       
     - name: Clone Device Tree
