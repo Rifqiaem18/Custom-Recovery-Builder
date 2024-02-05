@@ -14,19 +14,19 @@ on:
       DEVICE_TREE:
         description: 'Device Tree'
         required: true
-        default: 'https://github.com/Rifqiaem18/ASUS_X00HD_4.git'
+        default: 'https://github.com/Rifqiaem18/X00HD.git'
       DEVICE_TREE_BRANCH:
         description: 'Device Tree Branch'
         required: true
-        default: 'pbrp'
+        default: 'android-8.1'
       DEVICE_PATH:
         description: 'Device Path'
         required: true
-        default: 'device/asus/ASUS_X00HD_4'
+        default: 'device/asus/X00HD'
       DEVICE_NAME:
         description: 'Device Codename'
         required: true
-        default: 'ASUS_X00HD_4'
+        default: 'X00HD'
       BUILD_TARGET:
         description: 'Specify your Build Target'
         required: true
@@ -89,7 +89,7 @@ jobs:
         sudo apt -y upgrade
         sudo apt -y install gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib libc6-dev lib32ncurses5-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libwxgtk3.0-gtk3-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libtinfo5 libgflags-dev
         sudo add-apt-repository universe
-        sudo apt -y install libncurses5
+        sudo apt -y install libncurses5 
 
     - name: Install OpenJDK
       uses: actions/setup-java@v3
@@ -110,7 +110,7 @@ jobs:
         cd android-recovery
         git config --global user.name "Rifqiaem18"
         git config --global user.email "rifqi.aem@gmail.com"
-        repo init -u ${{ github.event.inputs.MANIFEST_URL }} -b ${{ github.event.inputs.MANIFEST_BRANCH }}
+        repo init --depth=1 -u ${{ github.event.inputs.MANIFEST_URL }} -b ${{ github.event.inputs.MANIFEST_BRANCH }}
 
     - name: Repo Sync
       run: |
@@ -123,6 +123,13 @@ jobs:
         git clone ${{ github.event.inputs.DEVICE_TREE }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ./${{ github.event.inputs.DEVICE_PATH }}
         cd ${{ github.event.inputs.DEVICE_PATH }}
         echo "COMMIT_ID=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+    - name: Custom
+      run: |
+        cd android-recovery
+        ${{ github.event.inputs.Custom_1 }}
+        ${{ github.event.inputs.Custom_2 }}
+      continue-on-error: true
 
     - name: Check Build Makefile
       run: |
@@ -143,20 +150,12 @@ jobs:
         cd /usr/bin
         sudo ln -sf python2 python
 
-    - name: Custom
-      run: |
-        cd android-recovery
-        ${{ github.event.inputs.Custom_1 }}
-        ${{ github.event.inputs.Custom_2 }}
-      continue-on-error: true
-
     - name: Building Image
       run: |
         cd android-recovery
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
-        lunch ${{ env.DEVICE_MAKEFILE }}-eng
-        mka recoveryimage
+        lunch ${{ env.DEVICE_MAKEFILE }}-eng && mka pbrp
 
     - name: Set Build Date # Output will be use in Release
       run: |
