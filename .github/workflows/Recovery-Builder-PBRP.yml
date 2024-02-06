@@ -150,12 +150,6 @@ jobs:
         cd /usr/bin
         sudo ln -sf python2 python
 
-    - name: Fixed Missing Fonts
-      run: |
-        cd android-recovery
-        git clone https://github.com/Rifqiaem18/Custom-Recovery-Builder.git -b missing-font external/noto-fonts/other
-      continue-on-error: true
-
     - name: Building Image
       run: |
         cd android-recovery
