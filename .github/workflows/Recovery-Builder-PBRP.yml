@@ -18,7 +18,7 @@ on:
       DEVICE_TREE_BRANCH:
         description: 'Device Tree Branch'
         required: true
-        default: 'android-8.1'
+        default: 'pbrp'
       DEVICE_PATH:
         description: 'Device Path'
         required: true
@@ -150,12 +150,18 @@ jobs:
         cd /usr/bin
         sudo ln -sf python2 python
 
+    - name: Fixed Missing Fonts
+      run: |
+        cd android-recovery
+        git clone https://github.com/Rifqiaem18/Custom-Recovery-Builder.git -b missing-font external/noto-fonts/other
+      continue-on-error: true
+
     - name: Building Image
       run: |
         cd android-recovery
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
-        lunch ${{ env.DEVICE_MAKEFILE }}-eng && mka pbrp
+        lunch ${{ env.DEVICE_MAKEFILE }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
 
     - name: Set Build Date # Output will be use in Release
       run: |
